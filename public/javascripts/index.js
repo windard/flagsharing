@@ -100,9 +100,13 @@ $(document).ready(function($) {
 
   chat_UI = {
   	init:function(){
+      this.initEmotion()
   		this.sendMessage();
   		this.sendNickname();
   	},
+  initEmotion:function(){
+    QxEmotion($('#emotion-btn'), $('#input-edit'));
+  },
  	chatBodyToBottom: function(){
 		var chat_body = $('.main .panel-body')[0];
 		chat_body.scrollTop = chat_body.scrollHeight;
@@ -155,6 +159,7 @@ $(document).ready(function($) {
   		chat_Socket.setNickname(nickname);
   	},
   	serverMessage:function(_content, _time){
+      _content = QxEmotion.Parse(_content);
   		var messages = $(".msg-list-body");
   		var message = '<div class="text-center sys-message">\
                                 <span class="sys-tip">系统消息：'+_content+'   '+_time+'</span>\
@@ -163,6 +168,7 @@ $(document).ready(function($) {
         this.chatBodyToBottom();
   	},
   	userMessage:function(_nick_name, _content, _time){
+      _content = QxEmotion.Parse(_content);
   		var messages = $(".msg-list-body");
   		var nickname = $("#my-nickname").text();
   		var textalign = _nick_name == nickname ? "text-right" : "";

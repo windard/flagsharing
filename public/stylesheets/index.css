@@ -59,6 +59,15 @@ header{
 .message-body{
 	margin-top: 15px
 }
+.emotion-panel{
+	position:absolute;
+	display:none;
+	z-index:200;
+}
+.emotion-panel td:hover{
+	cursor: pointer;
+	background-color: #ccc;
+}
 footer{
 	margin-top: 30px;
 	margin-bottom: 10px;
