@@ -1,5 +1,6 @@
 var io = require('socket.io')();
 var xssEscape = require('xss-escape');
+var setting = require('./setting');
 
 var nickname_list = [];
 
@@ -49,7 +50,7 @@ io.on('connection', function(_socket){
 
 		// 字符长度必须小于 20 个字符
 		if(_nickname.length > 20 || _nickname.length == 0){
-			return _socket.emit('change_nickname_error', '请填写正确的用户昵称，应在4到16个字符之间。')
+			return _socket.emit('change_nickname_error', '请填写正确的用户昵称，应在1到20个字符之间。')
 		}
 
 		// 昵称重复
@@ -84,12 +85,24 @@ io.on('connection', function(_socket){
 		if('' == _socket.nickname || null == _socket.nickname){
 			return _socket.emit('need_nickname');
 		}
-
-		_content = _content.trim();
+		_time = xssEscape(_time.trim());
+		_content = xssEscape(_content.trim());
 		console.log(_socket.nickname + ': say('+_content+')');
+
+		// 数据加入数据库
+		var connection = setting.connection;
+		connection.query('INSERT INTO flag(timestamp,username,words)  VALUES("'+_time+'","'+_socket.nickname+'","'+_content+'")', function(err, rows, fields) {
+			if (err){
+				// req.flash("error",err[0]);
+				// return res.redirect('/')
+				console.log("insert into database error");
+			};
+			// res.render('index',{title:'Node TODO',notes:rows});
+		});
+
 		// 广播 用户新消息
-		_socket.broadcast.emit('user_say', _socket.nickname, xssEscape(_content));
-		return _socket.emit('say_done', _socket.nickname, xssEscape(_content));
+		_socket.broadcast.emit('user_say', _socket.nickname, _content);
+		return _socket.emit('say_done', _socket.nickname, _content);
 	});
 
 })

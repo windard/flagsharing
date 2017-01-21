@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var setting = require('./setting');
 
 var index = require('./routes/index');
 // var users = require('./routes/users');
@@ -24,6 +25,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 // app.use('/users', users);
+
+app.get('/history',function(req,res,next){
+  var connection = setting.connection;
+
+  connection.query('SELECT * FROM flag', function(err, rows, fields) {
+    if (err){
+    	// return "error"+err[0];
+    	res.send("error");
+      // req.flash("error",err[0]);
+      // return res.redirect('/')
+    };
+    result = "";
+    rows.forEach(function(row){
+    	result += row.timestamp + "  " + row.username + " : " + row.words + "\n";
+    });
+    res.send(result);
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
