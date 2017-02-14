@@ -1,0 +1,76 @@
+header{
+	margin-bottom: 20px;
+}
+.main .panel-body{
+	height:380px;
+	overflow: scroll;
+	overflow-x: hidden; 
+}
+.main .panel-body::-webkit-scrollbar{
+    width:8px;
+    background-color:#ddd;
+    transition: all ease-in-out 0.5s;
+}
+.main .panel-body::-webkit-scrollbar-thumb{
+    background-color:#aaa;
+    border-radius:3px;
+}
+.main .panel-body{
+}
+.list .list-group{
+	height:227px;
+	overflow: auto;
+	overflow-x: hidden; 
+}
+.list .list-group li:hover{
+	background-color: #f5f5f5;
+}
+.list .list-group::-webkit-scrollbar{
+    width:8px;
+    background-color:#ddd;
+    transition: all ease-in-out 0.5s;
+}
+.list .list-group::-webkit-scrollbar-thumb{
+    background-color:#aaa;
+    border-radius:3px;
+}
+#emotion-btn img{
+	 width: 24px; 
+	 height: 24px;
+}
+.sys-message span{
+    display: inline-block;
+    padding: 5px 10px;
+    /*height: 30px;*/
+    background-color: #428bca;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+.message.jumbotron{
+	/*margin-top: 10px;*/
+	/*padding: 10px 0px;*/
+	padding-top: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	margin-bottom: 10px
+}
+.message-body{
+	margin-top: 15px
+}
+.emotion-panel{
+	position:absolute;
+	display:none;
+	z-index:200;
+}
+.emotion-panel td:hover{
+	cursor: pointer;
+	background-color: #ccc;
+}
+footer{
+	margin-top: 30px;
+	margin-bottom: 10px;
+	/*position: fixed;*/
+	/*bottom: 10px;*/
+}

@@ -1,0 +1,84 @@
+<html>
+
+
+<head>
+	<title>chat</title>
+</head>  
+
+
+<script src='{{ static_url("js/jquery-1.11.3.min.js") }}'></script>
+
+
+
+
+<body>
+
+
+
+<form onsubmit="return false;">
+
+<textarea style="width:500px;height:400px" id="lines"></textarea>
+<br />
+
+发一个：<input type="text" name="send">
+
+</form>
+
+
+
+<button id="test">哈哈哈
+
+</body>
+
+
+
+<script>
+
+
+$(document).ready(function(){
+
+
+	if (!window.MozWebSocket && !window.WebSocket ){
+		alert("你的浏览器不支持websocket.");
+		return
+	}
+
+
+	socket = new WebSocket("ws://127.0.0.1:8090/websocket");  
+
+
+
+	socket.onmessage = function(event) {  
+		$("#lines").val(
+			$("#lines").val() + "\n" + event.data
+		)
+	};  
+
+	socket.onopen = function(event) {  
+		$("#lines").val("你已进入聊天室...")
+	};  
+
+	socket.onclose = function(event) {  
+	    $("#lines").val("聊天室已关闭...")
+	};  
+
+
+
+
+
+
+	$("input[name=send]").on("keydown",function(event){      
+        if(event.keyCode==13){  
+           if (socket.readyState == WebSocket.OPEN){
+           		socket.send(  $(this).val() );
+           }
+        }      
+
+    })
+
+
+})
+
+</script>
+
+</html>
