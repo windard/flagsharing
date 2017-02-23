@@ -59,15 +59,17 @@ var serverMessage = function(_message){
 };
 
 var userMessage = function(_message){
-	_nick_name = _message.split("$")[0];
-	_content = _message.split("$")[1];
+	_nick_name = _message['username'];
+	_content = _message['content'];
+	// _nick_name = _message.split("$")[0];
+	// _content = _message.split("$")[1];
 	console.log(_nick_name + "say: " + _content);
 	chat_Socket.userMessage(_nick_name, _content, chat_Socket.getLocalHMS());
 };
 
 var userList = function(_list){
-	console.log("userList: "+_list.split("$"));
-	_list = _list.split("$");
+	console.log("userList: "+_list);
+	// _list = _list.split("$");
 	chat_Socket.userList(_list);
 };
 
@@ -88,8 +90,12 @@ var userQuit = function(_nick_name){
 };
 
 socket.onmessage = function(event) { 
-	action = event.data.slice(0, event.data.indexOf("$$"));
-	message = event.data.slice(event.data.indexOf("$$")+2);
+	// data = jQuery.parseJSON(event.data);
+	data = JSON.parse(event.data);
+	action = data['action'];
+	message = data['message'];
+	// action = event.data.slice(0, event.data.indexOf("$$"));
+	// message = event.data.slice(event.data.indexOf("$$")+2);
 	switch (action) {
 		case "needNickname": needNickname();
 							break;
@@ -144,7 +150,7 @@ chat_Socket = {
 	applyMessage: function(){
 		var content = $("input[id=input-edit]").val();
 		if(content){
-			socket.send("message$$"+content);
+			socket.send(JSON.stringify({"action":"message", "message":content}));
 			$("input[id=input-edit]").val('');
 		}
 	},
@@ -174,7 +180,7 @@ chat_Socket = {
 			nickname_edit.focus();
 			return;
 		}
-		socket.send("setNickname$$"+nickname);
+		socket.send(JSON.stringify({"action":"setNickname", "message":nickname}));
 	},
 	chatBodyToBottom: function(){
 		var chat_body = $('.main .panel-body');
