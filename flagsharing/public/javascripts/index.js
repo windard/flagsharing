@@ -1,6 +1,6 @@
 $(document).ready(function($) {
 
-  var socket = io();
+var socket = io('ws://localhost:3000', {transports: ['websocket']});
 
 Date.prototype.Format = function(fmt)
 { //author: meizz

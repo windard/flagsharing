@@ -1,6 +1,6 @@
 var io = require('socket.io')();
 var xssEscape = require('xss-escape');
-var setting = require('./setting');
+// var setting = require('./setting');
 
 var nickname_list = [];
 
@@ -90,15 +90,15 @@ io.on('connection', function(_socket){
 		console.log(_socket.nickname + ': say('+_content+')');
 
 		// 数据加入数据库
-		var connection = setting.connection;
-		connection.query('INSERT INTO flag(timestamp,username,words)  VALUES("'+_time+'","'+_socket.nickname+'","'+_content+'")', function(err, rows, fields) {
-			if (err){
-				// req.flash("error",err[0]);
-				// return res.redirect('/')
-				console.log("insert into database error");
-			};
-			// res.render('index',{title:'Node TODO',notes:rows});
-		});
+		// var connection = setting.connection;
+		// connection.query('INSERT INTO flag(timestamp,username,words)  VALUES("'+_time+'","'+_socket.nickname+'","'+_content+'")', function(err, rows, fields) {
+		// 	if (err){
+		// 		// req.flash("error",err[0]);
+		// 		// return res.redirect('/')
+		// 		console.log("insert into database error");
+		// 	};
+		// 	// res.render('index',{title:'Node TODO',notes:rows});
+		// });
 
 		// 广播 用户新消息
 		_socket.broadcast.emit('user_say', _socket.nickname, _content);
