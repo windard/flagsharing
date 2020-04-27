@@ -24,7 +24,7 @@ if (!window.MozWebSocket && !window.WebSocket ){
 	return
 }
 
-socket = new WebSocket("ws://127.0.0.1:8090/websocket");  
+socket = new WebSocket("ws://"+window.location.hostname+":8090/websocket");
 
 var needNickname = function(){
 	console.log("needNickname");
