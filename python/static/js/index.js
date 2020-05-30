@@ -29,11 +29,13 @@ socket = new WebSocket("ws://"+location.hostname+(location.port ? ':'+location.p
 var needNickname = function(){
 	console.log("needNickname");
 	$("#nickname-error").hide();
-	$("#nickname-edit").focus();
 	$("#login-modal").modal({
 		keyboard:false,
 		backdrop:"static"
 	});
+	$('#login-modal').on('shown.bs.modal', function () {
+		$("#nickname-edit").focus();
+	})
 };
 
 var setNicknameError = function(_error_message){
@@ -47,6 +49,7 @@ var setNicknameSuccess = function(_new_nickname){
 	console.log("setNicknameSuccess : " + _new_nickname);
 	$("#login-modal").modal("hide");
 	$("#my-nickname").text(_new_nickname);
+	$("input[id=input-edit]").focus();
 };
 
 var sayMessageError = function(_error_message){
@@ -63,7 +66,7 @@ var userMessage = function(_message){
 	_content = _message['content'];
 	// _nick_name = _message.split("$")[0];
 	// _content = _message.split("$")[1];
-	console.log(_nick_name + "say: " + _content);
+	console.log(_nick_name + " say: " + _content);
 	chat_Socket.userMessage(_nick_name, _content, chat_Socket.getLocalHMS());
 };
 
