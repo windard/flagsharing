@@ -1,10 +1,12 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import os
 import json
+import time
 import cgi
 # import bleach
 import logging
+import tornado.wsgi
 import tornado.web
 import tornado.ioloop
 import tornado.options
@@ -13,19 +15,23 @@ import tornado.httpserver
 
 from tornado.options import define, options
 
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 define("port", default=8090, help="run on the given port", type=int)
+
 
 def xssProtect(message):
     return cgi.escape(message)
     # attributes={u'a': [u'href']}
     # return bleach.linkify(bleach.clean(message, attributes=attributes, strip=True))
 
+
 class MainHandler(tornado.web.RequestHandler):
     """docstring for MainHandler"""
     def get(self):
         self.render("index.html", title='Flag Sharing')
+
 
 class ChatSocketHandler(tornado.websocket.WebSocketHandler):
     """docstring for ChatSocketHandler"""
@@ -35,9 +41,14 @@ class ChatSocketHandler(tornado.websocket.WebSocketHandler):
         # print "%s connected"%(id(self))
         self.write_message(json.dumps({"action":"needNickname", "message":""}))
 
-    def write_message(self, message, binary=False):
-        logger.info("message is %r", message)
-        super(ChatSocketHandler, self).write_message(message, binary)
+    def write_message(self, raw_message, binary=False):
+        data = json.loads(raw_message)
+        message = data.get("message")
+        if message and isinstance(message, dict):
+            logger.info("[%s] %s : %s" %(time.ctime(), message.get("username"), message.get("content")))
+        else:
+            logger.info("[%s] message is: %r", time.ctime(), message)
+        super(ChatSocketHandler, self).write_message(raw_message, binary)
 
     def on_message(self, message):
         # XSS 过滤
@@ -58,14 +69,14 @@ class ChatSocketHandler(tornado.websocket.WebSocketHandler):
             self.username = message
             self.write_message(json.dumps({"action":"setNicknameSuccess", "message":message}))
             # self.write_message("setNicknameSuccess$$%s"%message)
-            ChatSocketHandler.send_all(json.dumps({"action":"userJoin", "message":"message"}))
+            ChatSocketHandler.send_all(json.dumps({"action":"userJoin", "message": message}))
             # ChatSocketHandler.send_all("userJoin$$%s"%message)
 
             self.write_message(json.dumps({"action":"serverMessage", "message":"欢迎来到聊天室 :)"}))
             # self.write_message("serverMessage$$欢迎来到聊天室 :)")
-            self.write_message(json.dumps({"action":"userList", "message":[x.username for x in ChatSocketHandler.connects]}))
-            # self.write_message("userList$$" + "$".join(x.username for x in ChatSocketHandler.connects))
             ChatSocketHandler.connects.add(self)
+            self.send_all(json.dumps({"action":"userList", "message":[x.username for x in ChatSocketHandler.connects]}))
+            # self.write_message("userList$$" + "$".join(x.username for x in ChatSocketHandler.connects))
 
             # print "%s join"%self.username
             # print [x.username for x in ChatSocketHandler.connects]
@@ -88,8 +99,9 @@ class ChatSocketHandler(tornado.websocket.WebSocketHandler):
 
     def on_close(self):
         # print "%s quit"%self.username
+        if self in ChatSocketHandler.connects:
+            ChatSocketHandler.connects.remove(self)
 
-        ChatSocketHandler.connects.remove(self)
         ChatSocketHandler.send_all(json.dumps({"action":"userQuit", "message":self.username}))
         # print "%s closed"%(id(self))
 
@@ -102,19 +114,26 @@ class NofoundHandler(tornado.web.RequestHandler):
     """docstring for NofoundHandler"""
     def get(self):
         self.write("<h1>No Found</h1>")
-        
-if __name__ == '__main__':
-    settings = {
-        "template_path": os.path.join(os.path.dirname(__file__), "template"),
-        "static_path": os.path.join(os.path.dirname(__file__), "static"),
-        'default_handler_class': NofoundHandler,
-        "debug": True,
-    }
 
-    app = tornado.web.Application([
-        (r'/', MainHandler),
-        (r'/websocket', ChatSocketHandler),
-        ], **settings)
+
+settings = {
+    "template_path": os.path.join(os.path.dirname(__file__), "template"),
+    "static_path": os.path.join(os.path.dirname(__file__), "static"),
+    'default_handler_class': NofoundHandler,
+    "debug": True,
+}
+
+app = tornado.web.Application([
+    (r'/', MainHandler),
+    (r'/websocket', ChatSocketHandler),
+    ], **settings)
+
+
+wsgi_app = tornado.wsgi.WSGIAdapter(app)
+
+
+if __name__ == '__main__':
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.listen(options.port)
+    logger.info("server in :%s ...", options.port)
     tornado.ioloop.IOLoop.instance().start()

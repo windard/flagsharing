@@ -24,7 +24,7 @@ if (!window.MozWebSocket && !window.WebSocket ){
 	return
 }
 
-socket = new WebSocket("ws://"+window.location.hostname+":8090/websocket");
+socket = new WebSocket("ws://"+location.hostname+(location.port ? ':'+location.port: '')+"/websocket");
 
 var needNickname = function(){
 	console.log("needNickname");
@@ -77,8 +77,8 @@ var userJoin = function(_nick_name){
 	console.log("userJoin: "+_nick_name);
 	if( _nick_name == $("#my-nickname").text())
 		return 
-    chat_Socket.addUserToList(_nick_name);
-    chat_Socket.updateListCount();
+    // chat_Socket.addUserToList(_nick_name);
+    // chat_Socket.updateListCount();
     chat_Socket.serverMessage(_nick_name+" 加入了聊天室 (*^__^*) …… ",chat_Socket.getLocalHMS());
 };
 
@@ -232,7 +232,7 @@ chat_Socket = {
 		});
 	},
 	updateListCount: function(){
-		var list_count = $(".list .list-group").find("li").length + 1;
+		var list_count = $(".list .list-group").find("li").length;
 		$("#list-count").text("当前在线人数："+list_count+"人");
 	},
 	getLocalHMS: function(){

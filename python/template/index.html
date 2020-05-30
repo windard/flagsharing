@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
-    <link rel='stylesheet' href='{{ static_url("css/bootstrap.min.css") }}' />
-    <link rel='stylesheet' href='{{ static_url("css/style.css") }}' />
-    <link rel='stylesheet' href='{{ static_url("css/index.css") }}' />
+    <link rel='stylesheet' href="/static/css/bootstrap.min.css" />
+    <link rel='stylesheet' href="/static/css/style.css" />
+    <link rel='stylesheet' href="/static/css/index.css" />
 </head>
 <body>
     <header id="header" class="header">
@@ -21,71 +21,6 @@
                     <div class="panel-body">
                         <!-- <h2>I need a media </h2> -->
                         <div class="msg-list-body" id="msg-list-body">
-                            <!-- 消息列表 -->
-<!--                             <div class="text-center sys-message">
-                                <span class="sys-tip">系统消息：欢迎 winadrd 来到聊天室<small>&nbsp;:)&nbsp;</small>13:13:11</span>
-                            </div>
-                            <div class="message jumbotron">
-                                <div class="message-head">
-                                    <span class="label label-info"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;windard</span>&nbsp;&nbsp;
-                                    <span class="label label-default"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;12:32:12</span>&nbsp;&nbsp;
-                                </div>
-                                <div class="message-body">
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                </div>
-                            </div>
-                            <div class="text-center sys-message">
-                                <span class="sys-tip">系统消息：欢迎 winadrd 来到聊天室<small>&nbsp;:)&nbsp;</small>13:13:11</span>
-                            </div>
-                            <div class="message jumbotron">
-                                <div class="message-head">
-                                    <span class="label label-info"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;windard</span>&nbsp;&nbsp;
-                                    <span class="label label-default"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;12:32:12</span>&nbsp;&nbsp;
-                                </div>
-                                <div class="message-body">
-                                    This is what I say
-                                </div>
-                            </div>
-                            <div class="message jumbotron">
-                                <div class="message-head text-right">
-                                    <span class="label label-success"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;windard</span>&nbsp;&nbsp;
-                                    <span class="label label-default"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;12:32:12</span>&nbsp;&nbsp;
-                                </div>
-                                <div class="message-body text-right">
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                    This is what I say
-                                </div>
-                            </div>
-                            <div class="text-center sys-message">
-                                <span class="sys-tip">系统消息：欢迎 winadrd 来到聊天室<small>&nbsp;:)&nbsp;</small>13:13:11</span>
-                            </div>
-                            <div class="text-center sys-message">
-                                <span class="sys-tip">系统消息：欢迎 winadrd 来到聊天室<small>&nbsp;:)&nbsp;</small>13:13:11</span>
-                            </div>
-
-                            <div class="message jumbotron">
-                                <div class="message-head">
-                                    <span class="label label-info"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;windard</span>&nbsp;&nbsp;
-                                    <span class="label label-default"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;12:32:12</span>&nbsp;&nbsp;
-                                </div>
-                                <div class="message-body">
-                                    This is what I say
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -126,7 +61,7 @@
                     <div class="input-group input-group-lg words">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button" id="emotion-btn">
-                                <img src="{{ static_url('images/emotion_smile.png')}}" alt="emotion">
+                                <img src="/static/images/emotion_smile.png" alt="emotion">
                             </button>
                         </span>
                         <input type="text" class="form-control" id="input-edit" placeholder="请输入聊天内容" autofocus>
@@ -174,9 +109,9 @@
             </div>
         </div>
     </div>
-    <script src='{{ static_url("js/jquery-1.11.3.min.js") }}'></script>
-    <script src='{{ static_url("js/bootstrap.min.js") }}'></script>
-    <script src='{{ static_url("js/emotion.js") }}'></script>
-    <script src='{{ static_url("js/index.js") }}'></script>
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/emotion.js"></script>
+    <script src="/static/js/index.js"></script>
 </body>
 </html>
