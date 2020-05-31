@@ -24,7 +24,7 @@ if (!window.MozWebSocket && !window.WebSocket ){
 	return
 }
 
-socket = new WebSocket("ws://"+location.hostname+(location.port ? ':'+location.port: '')+"/websocket");
+socket = new WebSocket((location.protocol == "https:" ? 'wss://' : 'ws://')+location.hostname+(location.port ? ':'+location.port: '')+"/websocket");
 
 var needNickname = function(){
 	console.log("needNickname");

@@ -22,7 +22,7 @@ client_name = {}
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title='Online Chatroom')
 
 
 @app.route("/favicon.ico")
